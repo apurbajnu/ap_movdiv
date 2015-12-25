@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>hover plugin</title>
+</head>
+<style>
+	div {
+    background: #F3F1F1;
+    width: 148px;
+    height: 100px;
+    border: 1px solid #B7B7B7;
+
+    position: relative;
+}
+/*.prev{
+	top:-50px;
+}*/
+
+.next{
+	left:10px;
+}
+</style>
+<body>
+<div class="hello">
+	
+</div>
+
+<div class="next">
+	
+</div>
+
+<div class="prev">
+
+	
+</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script>
+	(function($){
+
+
+		$.fn.ap_movdiv = function(){
+				return this.each(function(){
+					var movdiv = Object.create(Movdiv);
+
+				});
+		
+			
+			
+		$('.next').on('mouseenter', function(){
+			prev_p = $(this).offset();
+			prev_p_top = prev_p.top;
+
+				$(this).animate({'left':'50px'},500, function(){
+			$(this).animate({'left': 0},500)
+				// console.log(prev_p.left);
+		});
+
+		});
+
+
+		$('.prev').ap_movdiv();
+	
+		//console.log($('.hello').css('top')); // status of postion
+
+	})(jQuery)
+
+	function findEven(v){
+		if((v&1)==0){
+			return v;
+		}
+		return false;
+	}
+	</script>
+
+</body>
+</html>
