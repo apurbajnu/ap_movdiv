@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>hover plugin</title>
+    <meta charset="UTF-8">
+    <title>hover plugin</title>
 </head>
 <style>
-	div {
+    div {
     background: #F3F1F1;
     width: 148px;
     height: 100px;
@@ -14,111 +14,112 @@
     position: relative;
 }
 /*.prev{
-	top:-50px;
+    top:-50px;
 }*/
 
 /*.next{
-	left:10px;
+    left:10px;
 }*/
 </style>
 <body>
 <div class="hello">
-	<h1>hello</h1>
+    <h1>hello</h1>
 </div>
 
 <div class="next">
-	<h1>NEXt</h1>
+    <h1>NEXt</h1>
 </div>
 
 <div class="prev">
 <h1>prive</h1>
-	
+    
 </div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
 
-	(function($, window , document, undefined){
+    ;(function($, window , document, undefined){
 
-		var Movdiv = {
+        var Movdiv = {
 
-			init: function(options, elem){
-					self = this;
-					animateProperty ='';
-					self.elem = elem;
-					self.$elem = $(elem);
+            init: function(options, elem){
+                    var self = this;
+                    self.elem = elem;
+                    self.$elem = $(elem);
+                    self.options = $.extend ({},$.fn.ap_movdiv.options,options);            
+                    this.move.apply(elem,[self.options]);
 
-					
-
-					
-					self.options = $.extend ({},$.fn.ap_movdiv.options,options);
-					
-					this.move.apply(elem,[self.options]);
+                },
 
 
-			},
+            move: function(options){    
+                    var self = this;
+                    var anim = (options.anim===undefined)?[]:options.anim;
+                    var ranim = (options.ranim===undefined)?[]:options.ranim;//return animation
+                    var duration = options.duration;
+                    var rduration = options.rduration; // return duration
+                    rduration = (rduration===undefined)?duration:rduration;
+                    anim[options.direction] = options.distance;
+                    ranim[options.direction] = options.rdistance;
+                    $(self).on(options.eventType, function(){
+                            $(self).animate(anim,duration, function(){ 
+                                    if(typeof (options.halfComplete)==='function'){
+                                        options.halfComplete();
+                                    };     
+                                $(self).animate(ranim,rduration, options.onComplete)
+            
+                                });
+                            });
+            
+                }, // end of move;
+
+        }
 
 
-			move: function(options){
-				self = this;
-				
-					console.log();
-				$(self).on(options.eventType, function(){
-					$(self).animate({'options.animateProperty':'50px'},500, function(){
-							//console.log(options.animateProperty);
-						$(self).animate({'left': 0},500)
-				
-			 		});
-				});
-			
-			}, // end of move;
+    $.fn.ap_movdiv = function(options){
+            return this.each(function(){
+                var movdiv = Object.create(Movdiv);
 
-			
+                movdiv.init(options, this);
+                
 
-				
+            });
+        }
 
-			
+    $.fn.ap_movdiv.options = {
+        eventType : 'mouseenter',
+        direction: 'left',
+        duration : 500,
+        distance : '50px',
+        rdistance: 0,
+        halfComplete:null,
+        onComplete:null,
+      
+    }
 
-		}
-
-
-	$.fn.ap_movdiv = function(options){
-			return this.each(function(){
-				var movdiv = Object.create(Movdiv);
-
-				movdiv.init(options, this);
-				
-
-			});
-		}
-
-	$.fn.ap_movdiv.options = {
-		eventType : 'mouseenter',
-		animateProperty: 'left'
-
-	}
-
-				/**
-				 *==========================================================================================================================
-				 *testing
-				 *============================================================================================================================= 
-				 **/
-		
-		// $('.next').on('mouseenter', function(){
-
-		// 		$(this).animate({'left':'50px'},500, function(){
-		// 			$(this).animate({'left': 0},500)
-		
-		//     	});
-
-		// });
-
-		$('.prev').ap_movdiv();
+                /**
+                 *==========================================================================================================================
+                 *testing
+                 *============================================================================================================================= 
+                 **/
 
 
-	})(jQuery, window,document)
+        $('.prev').ap_movdiv({
+            'direction':'bottom',
+            'anim' :{'bottom':'5px'},
+            'ranim' : {'bottom':'0px'},
+            halfComplete: function(){
+                    console.log('halfCompleted');
+            },
+            onComplete:function(){
+                    console.log('completed');
+            }
+        });
 
 
-	</script>
+    })(jQuery, window,document)
+
+
+    </script>
 
 </body>
 </html>
