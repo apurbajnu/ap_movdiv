@@ -17,60 +17,107 @@
 	top:-50px;
 }*/
 
-.next{
+/*.next{
 	left:10px;
-}
+}*/
 </style>
 <body>
 <div class="hello">
-	
+	<h1>hello</h1>
 </div>
 
 <div class="next">
-	
+	<h1>NEXt</h1>
 </div>
 
 <div class="prev">
-
+<h1>prive</h1>
 	
 </div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script>
-	(function($){
+
+	(function($, window , document, undefined){
+
+		var Movdiv = {
+
+			init: function(options, elem){
+					self = this;
+					animateProperty ='';
+					self.elem = elem;
+					self.$elem = $(elem);
+
+					
+
+					
+					self.options = $.extend ({},$.fn.ap_movdiv.options,options);
+					
+					this.move.apply(elem,[self.options]);
 
 
-		$.fn.ap_movdiv = function(){
-				return this.each(function(){
-					var movdiv = Object.create(Movdiv);
+			},
 
+
+			move: function(options){
+				self = this;
+				
+					console.log();
+				$(self).on(options.eventType, function(){
+					$(self).animate({'options.animateProperty':'50px'},500, function(){
+							//console.log(options.animateProperty);
+						$(self).animate({'left': 0},500)
+				
+			 		});
 				});
+			
+			}, // end of move;
+
+			
+
+				
+
+			
+
+		}
+
+
+	$.fn.ap_movdiv = function(options){
+			return this.each(function(){
+				var movdiv = Object.create(Movdiv);
+
+				movdiv.init(options, this);
+				
+
+			});
+		}
+
+	$.fn.ap_movdiv.options = {
+		eventType : 'mouseenter',
+		animateProperty: 'left'
+
+	}
+
+				/**
+				 *==========================================================================================================================
+				 *testing
+				 *============================================================================================================================= 
+				 **/
 		
-			
-			
-		$('.next').on('mouseenter', function(){
-			prev_p = $(this).offset();
-			prev_p_top = prev_p.top;
+		// $('.next').on('mouseenter', function(){
 
-				$(this).animate({'left':'50px'},500, function(){
-			$(this).animate({'left': 0},500)
-				// console.log(prev_p.left);
-		});
+		// 		$(this).animate({'left':'50px'},500, function(){
+		// 			$(this).animate({'left': 0},500)
+		
+		//     	});
 
-		});
-
+		// });
 
 		$('.prev').ap_movdiv();
-	
-		//console.log($('.hello').css('top')); // status of postion
 
-	})(jQuery)
 
-	function findEven(v){
-		if((v&1)==0){
-			return v;
-		}
-		return false;
-	}
+	})(jQuery, window,document)
+
+
 	</script>
 
 </body>
